@@ -32,8 +32,7 @@ Additionally we configure visualization and apply responsive layouts to allow in
 ![3dCont](3DContour)
 
 
-
-
-
+### Phase 3: Implementing Optimal Path AI Algorithms
+...
 
 
