@@ -7,22 +7,18 @@ import dash_bootstrap_components as dbc
 import rasterio
 import math
 
-# Load DEM (GeoTIFF)
 with rasterio.open(r"C:\Users\manya\Desktop\frts\tif\datas\n34_e077_1arc_v3.tif") as src:
     elevation = src.read(1).astype(np.float32)
     elevation[elevation == src.nodata] = np.nan
 
-# Normalize to 0..1 for rendering
 elevation = np.nan_to_num(elevation, nan=np.nanmin(elevation))
 elev_min = np.min(elevation)
 elev_max = np.max(elevation)
 norm = (elevation - elev_min) / (elev_max - elev_min)
 
-# Downsample (for performance)
 downscale = 4
 norm_down = norm[::downscale, ::downscale]
 
-# Save as JSON
 with open("heightmap.json", "w") as f:
     json.dump(norm_down.tolist(), f)
 
@@ -32,11 +28,10 @@ height = src.height
 pixel_width_deg = transform.a
 pixel_height_deg = -transform.e
 
-# Adjusted resolution (after downsampling)
 width_ds = width // downscale
 height_ds = height // downscale
 
-# Calculate real-world distance at 34°N
+
 lat_deg = 34
 lat_rad = math.radians(lat_deg)
 km_per_deg_lat = 111.32
@@ -53,7 +48,6 @@ Z = gaussian_filter(Z, sigma=1.5)[::2, ::2]  #smoother
 
 rows, cols = Z.shape
 
-# --- Load original GeoTIFF transform ---
 with rasterio.open(r"C:\Users\manya\Desktop\frts\tif\datas\n34_e077_1arc_v3.tif") as src:
     transform = src.transform
     full_width = src.width
@@ -61,24 +55,23 @@ with rasterio.open(r"C:\Users\manya\Desktop\frts\tif\datas\n34_e077_1arc_v3.tif"
     pixel_width_deg = transform.a
     pixel_height_deg = -transform.e
 
-# --- Convert to kilometers (1 degree ≈ 111 km) ---
+
 pixel_width_km = pixel_width_deg * 111
 pixel_height_km = pixel_height_deg * 111
 
-# --- Calculate downscaling factor (based on JSON vs original tif size) ---
+
 downscale_x = full_width // cols
 downscale_y = full_height // rows
 
-# --- Final per-grid-cell size in kilometers ---
 grid_dx_km = pixel_width_km * downscale_x
 grid_dy_km = pixel_height_km * downscale_y
 
-# --- Coordinate mesh (not used directly but left for reference) ---
+
 x = np.linspace(0, 1, cols)
 y = np.linspace(0, 1, rows)
 X, Y = np.meshgrid(x, y)
 
-# --- Helper: interpolate path that hugs surface ---
+
 def interpolate_path(p1, p2, steps=100):
     x1, y1 = p1
     x2, y2 = p2
@@ -88,14 +81,14 @@ def interpolate_path(p1, p2, steps=100):
     y_vals = np.clip(y_vals, 0, rows - 1)
     return x_vals, y_vals
 
-# --- Dash app setup ---
+
 app = Dash(__name__, external_stylesheets=[dbc.themes.SLATE])
 server = app.server
 
 def create_3d_figure(markers=[], follow_path=None, camera=None):
     fig = go.Figure()
 
-    # Terrain surface
+
     fig.add_trace(go.Surface(
         x=X,
         y=Y,
@@ -107,7 +100,7 @@ def create_3d_figure(markers=[], follow_path=None, camera=None):
         opacity=1.0
     ))
 
-    # Markers
+ 
     for i, (gx, gy) in enumerate(markers):
         mx, my = X[gy, gx], Y[gy, gx]
         mz = Z[gy, gx] * 50
@@ -120,7 +113,7 @@ def create_3d_figure(markers=[], follow_path=None, camera=None):
             name=f"Marker {i+1}"
         ))
 
-    # Path
+
     if follow_path:
         xs, ys = follow_path
         zs = Z[ys, xs] * 50 + 2
@@ -165,7 +158,7 @@ def create_3d_figure(markers=[], follow_path=None, camera=None):
     return fig
 
 
-# --- Layout ---
+
 app.layout = dbc.Container([
     dbc.Row([
         dbc.Col(html.Div(id='summary-box', className="text-center fw-bold p-2", style={
@@ -197,7 +190,7 @@ app.layout = dbc.Container([
 
 
 
-# --- Callbacks ---
+
 @app.callback(
     Output('terrain-plot', 'figure'),
     Output('marker-store', 'data'),
@@ -250,6 +243,6 @@ def on_click(clickData, stored_markers, camera_data, relayout_data):
     fig = create_3d_figure(markers=stored_markers, follow_path=follow_path, camera=camera_data)
     return fig, stored_markers, info, summary, camera_data
 
-# --- Run ---
+
 if __name__ == "__main__":
     app.run(debug=True)
