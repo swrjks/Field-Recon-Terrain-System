@@ -43,8 +43,6 @@ This enables:
 - Accurate contour plotting
 - Coordinate-aligned terrain modeling
 
-![Contour to 3D](pics/"Contour plotting.png")
-
 
 ---
 
@@ -64,6 +62,9 @@ We implement an AI model to predict the **cost of terrain traversal** based on:
 - Elevation
 - Slope
 - Distance to goal
+
+![pics/"Optimal Path"](https://github.com/swrjks/Field-Recon-Terrain-System/blob/a60554a09f610f0ca024004d2b8486d5bdd96e40/pics/Optimal_path_ai.png)
+
 
 ### Model Architecture:
 - A **Multilayer Perceptron (MLP)** with one hidden layer
