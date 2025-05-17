@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>FRTS Command Center</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700&family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css" />
+  <script src="https://cdn.jsdelivr.net/npm/three@0.132.2/build/three.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.132.2/examples/js/controls/OrbitControls.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+ 
+  <div id="particles"></div>
+
+  <div class="dashboard">
+    <!-- Header -->
+    <header>
+      <div class="logo">
+        <div class="logo-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M12 2L3 7L12 12L21 7L12 2Z" stroke="black" stroke-width="2"/><path d="M3 12L12 17L21 12" stroke="black" stroke-width="2"/><path d="M3 17L12 22L21 17" stroke="black" stroke-width="2"/></svg>
+        </div>
+        <div class="logo-text">FRTS COMMAND</div>
+      </div>
+
+      <nav class="nav-menu">
+        <a href="#" class="nav-link">Dashboard</a>
+        <a href="nav.html" class="nav-link">Navigate</a>
+        <a href="#" class="nav-link">Intel</a>
+        <a href="#" class="nav-link">Settings</a>
+      </nav>
+
+      <div class="status-bar">
+        <div class="status-item"><i>🕒</i><span id="current-time">--:--:--</span></div>
+        <div class="status-item"><i>📍</i><span>Grid 47.6234° N, 122.3306° W</span></div>
+      </div>
+    </header>
+
+    <!-- Left Panel -->
+    <div class="panel panel-left">
+      <div class="card">
+        <div class="card-title">Live Terrain Scan</div>
+        <div class="scan-container">
+          <div class="scan-ring"></div>
+          <div class="scan-bars">
+            <div class="bar bar1"></div>
+            <div class="bar bar2"></div>
+            <div class="bar bar3"></div>
+            <div class="bar bar4"></div>
+            <div class="bar bar5"></div>
+          </div>
+          <div class="scan-status">LIVE</div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">Signal Monitor</div>
+        <div class="signal-monitor">
+          <div class="signal-icon">
+            <div class="arc arc1"></div>
+            <div class="arc arc2"></div>
+            <div class="arc arc3"></div>
+          </div>
+          <div class="signal-status">ONGOING</div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">Datasets</div>
+        <div class="control-group">
+          <label class="control-label">Dijkstra</label>
+        </div>
+      </div>
+    </div>
+
+    <!-- Globe -->
+    <div class="globe-container">
+      <canvas id="stars-canvas"></canvas>
+      <div id="earth-globe"></div>
+    </div>
+
+    <!-- Right Panel -->
+    <div class="panel panel-right">
+      <div class="glitch">FRTS SYSTEM</div>
+      <div class="card">
+        <div class="card-title">Key Features</div>
+        <div class="content-section">
+          <ul>
+            <li>Real-time 3D terrain visualization</li>
+            <li>AI-powered pathfinding algorithms</li>
+            <li>Satellite imagery integration</li>
+            <li>Hazard detection and alerts</li>
+            <li>Resource location mapping</li>
+            <li>Multi-platform compatibility</li>
+          </ul>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-title">Alert Feed</div>
+        <div class="alert-item">
+          <div class="alert-icon">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M12 2L3 7L12 12L21 7L12 2Z" stroke="currentColor" stroke-width="2"/><path d="M3 12L12 17L21 12" stroke="currentColor" stroke-width="2"/><path d="M3 17L12 22L21 17" stroke="currentColor" stroke-width="2"/></svg>
+          </div>
+          <div class="alert-content">
+            <div class="alert-title"><span>Terrain Change Detected</span><span class="alert-time">2 min ago</span></div>
+            <div class="alert-desc">Landslide detected in Grid G7. Alternate route suggested.</div>
+          </div>
+        </div>
+        <div class="alert-item">
+          <div class="alert-icon warning">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M12 9V11M12 15H12.01M5 19H19C20.1046 19 21 18.1046 21 17V7C21 5.89543 20.1046 5 19 5H5C3.89543 5 3 5.89543 3 7V17C3 18.1046 3.89543 19 5 19Z" stroke="currentColor" stroke-width="2"/></svg>
+          </div>
+          <div class="alert-content">
+            <div class="alert-title"><span>Wildlife Activity</span><span class="alert-time">12 min ago</span></div>
+            <div class="alert-desc">Wolf pack detected 500m NE of Unit Bravo.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+      <div class="radar-minimap">
+        <div class="radar-sweep"></div>
+        <div class="unit-marker"></div>
+        <div class="unit-marker"></div>
+        <div class="unit-marker"></div>
+      </div>
+      <div class="system-status">
+        <div class="status-meter"><div class="status-label">Battery</div><div class="meter-bar"><div class="meter-fill"></div></div></div>
+        <div class="status-meter"><div class="status-label">CPU</div><div class="meter-bar"><div class="meter-fill cpu"></div></div></div>
+        <div class="status-meter"><div class="status-label">Memory</div><div class="meter-bar"><div class="meter-fill memory"></div></div></div>
+        <div class="status-meter"><div class="status-label">Network</div><div class="meter-bar"><div class="meter-fill network"></div></div></div>
+      </div>
+      <div class="quick-controls">
+        <button class="control-btn" title="Map Layers">🗺️</button>
+        <button class="control-btn" title="Export Route">💾</button>
+        <button class="control-btn" title="Mission History">📋</button>
+        <button class="control-btn" title="Emergency Beacon">🚨</button>
+      </div>
+    </footer>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
