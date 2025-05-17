@@ -43,7 +43,7 @@ This enables:
 - Accurate contour plotting
 - Coordinate-aligned terrain modeling
 
-![Contour to 3D](contour_plot.png)
+![Contour to 3D](pics/Contour plotting.png)
 
 ---
 
