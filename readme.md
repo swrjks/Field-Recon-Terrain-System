@@ -54,6 +54,8 @@ Using the preprocessed elevation data:
 
 This lays the foundation for route evaluation and spatial awareness.
 
+![image](https://github.com/swrjks/Field-Recon-Terrain-System/blob/main/pics/3d_plotting_wireframe.png)
+
 ---
 
 ## Phase 3: AI-Powered Pathfinding
