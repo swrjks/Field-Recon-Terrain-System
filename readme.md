@@ -43,6 +43,7 @@ This enables:
 - Accurate contour plotting
 - Coordinate-aligned terrain modeling
 
+![image1](https://github.com/swrjks/Field-Recon-Terrain-System/blob/main/pics/Contour%20plotting.png)
 
 ---
 
