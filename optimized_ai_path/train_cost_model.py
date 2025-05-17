@@ -1,4 +1,3 @@
-# train_cost_model.py
 import torch
 import torch.nn as nn
 import numpy as np
@@ -13,7 +12,7 @@ def compute_slope(Z):
 
 slope = compute_slope(Z)
 
-# Generate training samples
+
 samples = []
 for y in range(rows):
     for x in range(cols):
@@ -26,7 +25,6 @@ for y in range(rows):
 X_data = torch.tensor([s[0] for s in samples], dtype=torch.float32)
 y_data = torch.tensor([s[1] for s in samples], dtype=torch.float32).view(-1, 1)
 
-# Tiny regression model
 class CostModel(nn.Module):
     def __init__(self):
         super().__init__()
