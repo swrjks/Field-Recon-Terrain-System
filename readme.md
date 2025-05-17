@@ -12,7 +12,8 @@ What makes our approach unique is the combination of **ground reality terrain mo
 ### Phase 1: Data extraction
 Data is extracted in the form of GeoTiff Files, a type of raster image file containing not only image data-such as satellite imagery, aerial photography, or digital elevation models-but also embedded geographic metadata. This metadata enables each pixel in the image to be precisely mapped to real-world spatial coordinates
 
-!(C:\Users\manya\Desktop\A-topographic-contour-map-of-mound-1-at-the-Wright-Memorial-The-contour-interval-is-01.png)
+![](C:\Users\manya\Desktop\A-topographic-contour-map-of-mound-1-at-the-Wright-Memorial-The-contour-interval-is-01.png)
+![](C:\Users\manya\Desktop\What-are-Contour-Lines-1.webp)
 
 We extract a specific geographic region from a GeoTIFF elevation file and converts it to a JSON format containing coordinate-elevation pairs with **Spatial Subsetting**, converting **raster pixels** to **JSON format** which aids us in plotting an accurate contour plot of the terrain data.
 
