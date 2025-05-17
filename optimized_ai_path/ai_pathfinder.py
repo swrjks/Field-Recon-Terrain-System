@@ -1,4 +1,3 @@
-# ai_pathfinder.py
 import torch
 import heapq
 import numpy as np
