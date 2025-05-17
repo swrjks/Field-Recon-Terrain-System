@@ -29,6 +29,7 @@ We load the preprocessed data that we obtained in the previous phase and use it 
 
 Additionally we configure visualization and apply responsive layouts to allow interaction and efficient planning.
 
+![3dCont](3DContour)
 
 
 
