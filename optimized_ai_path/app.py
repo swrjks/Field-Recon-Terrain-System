@@ -4,7 +4,8 @@ import plotly.graph_objects as go
 from dash import Dash, dcc, html, Output, Input, State
 import dash_bootstrap_components as dbc
 
-from preprocessing import Z, X, Y, interpolate_path, grid_dx_km, grid_dy_km, x_km_total, y_km_total
+from preprocessing import Z, X, Y, grid_dx_km, grid_dy_km, x_km_total, y_km_total
+from ai_pathfinder import ai_a_star 
 
 rows, cols = Z.shape
 
@@ -37,15 +38,15 @@ def create_3d_figure(markers=[], follow_path=None, camera=None):
         ))
 
     if follow_path:
-        xs, ys = follow_path
-        zs = Z[ys, xs] * 50 + 2
+        xs, ys = zip(*follow_path)
+        zs = Z[[y for x, y in follow_path], [x for x, y in follow_path]] * 50 + 2
         fig.add_trace(go.Scatter3d(
-            x=X[ys, xs],
-            y=Y[ys, xs],
+            x=X[[y for x, y in follow_path], [x for x, y in follow_path]],
+            y=Y[[y for x, y in follow_path], [x for x, y in follow_path]],
             z=zs,
             mode="lines",
             line=dict(color="orange", width=5),
-            name="Surface Path"
+            name="AI Path"
         ))
 
     fig.update_layout(
@@ -69,8 +70,7 @@ def create_3d_figure(markers=[], follow_path=None, camera=None):
         bgcolor="black",
         bordercolor="white",
         borderwidth=1
-)
-
+    )
 
     if camera:
         fig.update_layout(scene_camera=camera)
@@ -121,8 +121,9 @@ def on_click(clickData, stored_markers, camera_data, relayout_data):
 
     clicked_x = float(clickData['points'][0]['x'])
     clicked_y = float(clickData['points'][0]['y'])
-    grid_x = int(np.round(clicked_x * (cols - 1)))
-    grid_y = int(np.round(clicked_y * (rows - 1)))
+
+    dist = np.sqrt((X - clicked_x) ** 2 + (Y - clicked_y) ** 2)
+    grid_y, grid_x = np.unravel_index(np.argmin(dist), dist.shape)
 
     stored_markers.append((grid_x, grid_y))
     if len(stored_markers) > 2:
@@ -140,8 +141,8 @@ def on_click(clickData, stored_markers, camera_data, relayout_data):
         dy_km = (y2 - y1) * grid_dy_km
         true_3d_dist_km = np.sqrt(dx_km**2 + dy_km**2 + dz**2)
 
-        follow_path = interpolate_path((x1, y1), (x2, y2))
-        summary = f"3D Distance: {true_3d_dist_km:.2f} Km | Elevation Difference: {dz:.2f} Km"
+        follow_path = ai_a_star((x1, y1), (x2, y2), mode="fastest")  # <- AI path
+        summary = f"AI Path 3D Distance: {true_3d_dist_km:.2f} Km | Elevation Δ: {dz:.2f} Km"
 
     fig = create_3d_figure(markers=stored_markers, follow_path=follow_path, camera=camera_data)
     return fig, stored_markers, "", summary, camera_data
