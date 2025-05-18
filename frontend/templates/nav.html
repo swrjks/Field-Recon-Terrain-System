@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Coordinates Visualizer</title>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700&family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --color-space: #0a0e17;
+      --color-deep-space: #050811;
+      --color-neon-blue: #00f0ff;
+      --color-neon-teal: #00ffc8;
+      --color-text-primary: rgba(255,255,255,0.92);
+      --color-text-secondary: rgba(255,255,255,0.6);
+      --color-glass: rgba(15, 23, 42, 0.5);
+      --color-glass-border: rgba(255,255,255,0.1);
+      --glow-blue: 0 0 15px rgba(0, 240, 255, 0.5);
+      --transition-fast: 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Montserrat', sans-serif;
+      background-color: var(--color-space);
+      color: var(--color-text-primary);
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      background-image:
+        radial-gradient(circle at 20% 30%, rgba(0, 240, 255, 0.05) 0%, transparent 25%),
+        radial-gradient(circle at 80% 70%, rgba(0, 255, 200, 0.05) 0%, transparent 25%),
+        linear-gradient(to bottom, var(--color-space), var(--color-deep-space));
+    }
+
+    .navbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 2rem;
+      background: var(--color-glass);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--color-glass-border);
+    }
+
+    .nav-title {
+      font-family: 'Orbitron', sans-serif;
+      font-weight: 700;
+      font-size: 1.2rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      background: linear-gradient(90deg, var(--color-neon-blue), var(--color-neon-teal));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 1.5rem;
+    }
+
+    .nav-link {
+      color: var(--color-text-secondary);
+      text-decoration: none;
+      font-size: 0.9rem;
+      transition: var(--transition-fast);
+      position: relative;
+    }
+
+    .nav-link:hover { color: var(--color-neon-blue); }
+    .nav-link.active { color: var(--color-neon-teal); }
+
+    .nav-link.active::after {
+      content: '';
+      position: absolute;
+      bottom: -5px;
+      left: 0;
+      width: 100%;
+      height: 2px;
+      background: var(--color-neon-teal);
+      border-radius: 2px;
+    }
+
+    .main-container {
+      display: flex;
+      flex: 1;
+      overflow: hidden;
+    }
+
+    .side-panel {
+      width: 300px;
+      background: var(--color-glass);
+      backdrop-filter: blur(10px);
+      border-right: 1px solid var(--color-glass-border);
+      padding: 1.5rem;
+      overflow-y: auto;
+    }
+
+    .content-area {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    .globe-container {
+      flex: 1;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: rgba(0, 0, 0, 0.2);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .globe-placeholder {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+    }
+
+    .globe-placeholder-text {
+      font-family: 'Orbitron', sans-serif;
+      color: var(--color-text-secondary);
+      margin-top: 1rem;
+    }
+
+    .globe-icon {
+      width: 100px;
+      height: 100px;
+      background: radial-gradient(circle, var(--color-neon-blue) 0%, transparent 70%);
+      border-radius: 50%;
+      opacity: 0.3;
+      position: relative;
+    }
+
+    .globe-icon::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 120%;
+      height: 120%;
+      border: 1px solid var(--color-neon-blue);
+      border-radius: 50%;
+      opacity: 0.2;
+    }
+
+    .input-group { margin-bottom: 1.5rem; }
+    .input-row { display: flex; gap: 1rem; margin-bottom: 1rem; }
+    .input-field { flex: 1; }
+
+    .control-label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-size: 0.8rem;
+      color: var(--color-text-secondary);
+    }
+
+    input {
+      width: 100%;
+      padding: 0.75rem;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid var(--color-glass-border);
+      border-radius: 4px;
+      color: var(--color-text-primary);
+    }
+
+    input:focus {
+      outline: none;
+      border-color: var(--color-neon-blue);
+      box-shadow: var(--glow-blue);
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0.75rem 1.5rem;
+      background: rgba(0, 240, 255, 0.1);
+      border: 1px solid var(--color-neon-blue);
+      border-radius: 4px;
+      color: var(--color-neon-blue);
+      font-family: 'Orbitron', sans-serif;
+      font-size: 0.9rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      cursor: pointer;
+      width: 100%;
+    }
+
+    .btn-primary {
+      background: linear-gradient(90deg, var(--color-neon-blue), var(--color-neon-teal));
+      color: var(--color-space);
+      font-weight: 500;
+    }
+
+    .output-box {
+      background: rgba(10, 20, 40, 0.3);
+      border-radius: 8px;
+      padding: 1.25rem;
+      border: 1px solid var(--color-glass-border);
+      margin-top: 2rem;
+    }
+
+    .output-title {
+      font-family: 'Orbitron', sans-serif;
+      font-weight: 500;
+      font-size: 0.9rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-bottom: 1rem;
+      color: var(--color-neon-teal);
+    }
+
+    @media (max-width: 768px) {
+      .main-container { flex-direction: column; }
+      .side-panel {
+        width: 100%;
+        border-right: none;
+        border-bottom: 1px solid var(--color-glass-border);
+      }
+      .input-row { flex-direction: column; }
+    }
+  </style>
+</head>
+<body>
+  <div class="navbar">
+    <div class="nav-title">GEOVIS</div>
+    <div class="nav-links">
+      <a href="#" class="nav-link active">Visualizer</a>
+    </div>
+  </div>
+
+  <div class="main-container">
+    <div class="side-panel">
+      <div class="input-group">
+        <div class="input-row">
+          <div class="input-field">
+            <label class="control-label">Latitude</label>
+            <input type="text" id="vis-latitude" placeholder="Enter latitude">
+          </div>
+        </div>
+        <div class="input-row">
+          <div class="input-field">
+            <label class="control-label">Longitude</label>
+            <input type="text" id="vis-longitude" placeholder="Enter longitude">
+          </div>
+        </div>
+        <button class="btn btn-primary" id="search-btn">Submit</button>
+        <div style="margin-top: 1rem; font-size: 0.8rem; color: var(--color-text-secondary); text-align: center;">
+          TIF File: <strong>{{ tif_file }}</strong>
+        </div>
+      </div>
+
+      <div class="output-box">
+        <div class="output-title">Selected Points</div>
+        <div id="vis-output-content">
+          <p>Enter coordinates to select Point 1 and Point 2</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="content-area">
+      <div class="globe-container">
+        <div class="globe-placeholder" id="globe-placeholder">
+          <div class="globe-icon"></div>
+          <div class="globe-placeholder-text">Globe visualization will appear here</div>
+        </div>
+        <iframe id="terrain-frame" src="" style="display: none; width: 100%; height: 100%; border: none;"></iframe>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    let pointCount = 0;
+    let point1 = null, point2 = null;
+
+    const urlParams = new URLSearchParams(window.location.search);
+    const latParam = urlParams.get("lat");
+    const lonParam = urlParams.get("lon");
+
+    if (latParam) document.getElementById("vis-latitude").value = latParam;
+    if (lonParam) document.getElementById("vis-longitude").value = lonParam;
+
+    document.getElementById('search-btn').addEventListener('click', () => {
+      const lat = document.getElementById('vis-latitude').value.trim();
+      const lon = document.getElementById('vis-longitude').value.trim();
+      const output = document.getElementById('vis-output-content');
+
+      if (!lat || !lon) {
+        output.innerHTML = '<p style="color: #ff2a6d">Please enter both latitude and longitude.</p>';
+        return;
+      }
+
+      pointCount++;
+      if (pointCount === 1) {
+        point1 = { lat, lon };
+      } else if (pointCount === 2) {
+        point2 = { lat, lon };
+        pointCount = 0;
+      }
+
+      let content = '';
+      if (point1) content += `<p><strong>Point 1:</strong> ${point1.lat}, ${point1.lon}</p>`;
+      if (point2) content += `<p><strong>Point 2:</strong> ${point2.lat}, ${point2.lon}</p>`;
+      output.innerHTML = content;
+
+      // Redirect to /nav to update current_tif.txt
+      window.location.href = `/nav?lat=${lat}&lon=${lon}`;
+    });
+
+    window.addEventListener("load", () => {
+      const lat = new URLSearchParams(window.location.search).get("lat");
+      const lon = new URLSearchParams(window.location.search).get("lon");
+
+      if (lat && lon) {
+        const frame = document.getElementById("terrain-frame");
+        const placeholder = document.getElementById("globe-placeholder");
+        if (frame && placeholder) {
+          placeholder.style.display = "none";
+          frame.src = `/terrain?lat=${lat}&lon=${lon}&t=${Date.now()}`;
+          frame.style.display = "block";
+        }
+      }
+    });
+  </script>
+</body>
+</html>
