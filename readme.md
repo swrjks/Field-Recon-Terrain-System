@@ -84,6 +84,8 @@ This enables adaptive, terrain-aware path planning beyond simple heuristics.
 - Allow **real-time path previews** between points
 - Add **draggable markers** and terrain-clamped lines
 
+![pics/"Optimal Path"](https://github.com/swrjks/Field-Recon-Terrain-System/blob/main/pics/Interactive_custom.png)
+
 ---
 _"Navigating unknown terrain should never be guesswork"_
   
