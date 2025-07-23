@@ -89,9 +89,9 @@ _"Navigating unknown terrain should never be guesswork"_
   
 ## Demo:
 
-### 📹 Video 1: Terrain Data Processing + 3D Visualization
+### Video 1: Terrain Data Processing + 3D Visualization
 [![Watch on YouTube](https://img.youtube.com/vi/bkd9iPjW8c8/0.jpg)](https://www.youtube.com/watch?v=bkd9iPjW8c8)
 
-### 📹 Video 2: AI Pathfinding Demo
+### Video 2: AI Pathfinding Demo
 [![Watch on YouTube](https://img.youtube.com/vi/OHv6i0PWtTo/0.jpg)](https://www.youtube.com/watch?v=OHv6i0PWtTo)
 
