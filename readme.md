@@ -1,12 +1,10 @@
 # Field Recon Terrain System (FRTS)
 
 ## Track Chosen:
-**AI in Defense and Disaster Response**
-
----
+**AI in Defense**
 
 ## Problem Statement:
-Defense personnel and disaster response teams are often deployed in unfamiliar, high-risk terrains such as **hilly regions**, **dense forests**, or **disaster-hit zones**. In these situations, they lack access to **real-time terrain awareness** and face difficulties in **navigation** and **mission planning**. This increases operational risk, delays response times, and reduces mission efficiency.
+Defense personnels are often deployed in unfamiliar, high-risk terrains such as **hilly regions** or **dense forests**. In these situations, they lack access to **real-time terrain awareness** and face difficulties in **navigation** and **mission planning**. This increases operational risk, delays response times, and reduces mission efficiency.
 
 There is a strong need for a system that can provide:
 - Accurate **3D terrain insights**
