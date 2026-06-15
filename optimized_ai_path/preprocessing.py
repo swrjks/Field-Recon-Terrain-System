@@ -5,7 +5,7 @@ import rasterio
 from scipy.ndimage import gaussian_filter
 
 
-TIF_PATH = r"C:\Users\manya\Desktop\frts\tif\datas\n34_e077_1arc_v3.tif"
+TIF_PATH = r"C:\Users\swara\Desktop\FRTS\Field-Recon-Terrain-System\data\tiffs\n34_e077_1arc_v3.tif" 
 HEIGHTMAP_JSON = "heightmap.json"
 DOWNSCALE = 4
 

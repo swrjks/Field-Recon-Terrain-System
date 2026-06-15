@@ -1,0 +1,16 @@
+body, html {
+    background: #04080f;
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+}
+
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: #04080f; }
+::-webkit-scrollbar-thumb { background: #0d4a6e; border-radius: 2px; }
+
+.js-plotly-plot .plotly .modebar { background: transparent !important; }
+.js-plotly-plot .plotly .modebar-btn path { fill: #007d6a !important; }
+
+.glow-btn { transition: all 0.2s ease; }
+.glow-btn:hover { box-shadow: 0 0 12px #007d6a; }

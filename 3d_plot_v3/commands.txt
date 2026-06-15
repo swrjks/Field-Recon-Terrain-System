@@ -1,0 +1,8 @@
+pip install -r requirements.txt
+
+TO TRAIN COST MODEL
+python preprocessing.py
+python train_cost_model.py
+
+TO RUN DASH APP
+python app.py
